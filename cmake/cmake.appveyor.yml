@@ -30,11 +30,11 @@ init:
   - echo %generator%
 
 before_build:
-  - mkdir C:\projects\wxSQLite3\build
-  - cd C:\projects\wxSQLite3\build
+  - mkdir C:\projects\wxSQLite3_build
+  - cd C:\projects\wxSQLite3_build
   - cmake --version
-  - cmake .. -DCMAKE_BUILD_TYPE=%configuration% -G %generator%
+  - cmake C:\projects\wxSQLite3 -DCMAKE_BUILD_TYPE=%configuration% -G %generator%
 
 build_script:
-  - cd C:\projects\wxSQLite3\build
+  - cd C:\projects\wxSQLite3_build
   - cmake --build . --config %configuration%
