@@ -2,6 +2,12 @@ cmake_minimum_required(VERSION 3.2)
 
 project(wxSQLite3_SEE VERSION 4.3.0)
 
+message(STATUS "------------------- wxSQLite3_SEE -------------------")
+message(STATUS "Please note that the rijndael.* files are licensed")
+message(STATUS "under LGPL-3.0+ WITH WxWindows-exception-3.1.")
+message(STATUS "Make sure to respect the license terms, if linking")
+message(STATUS "statically with the sqlite3lib target.")
+message(STATUS "-----------------------------------------------------")
 
 #file(GLOB SQLITE_SEE_SRC ${CMAKE_CURRENT_SOURCE_DIR}/sqlite3secure/src/*.c)
 #file(GLOB SQLITE_SEE_HDR ${CMAKE_CURRENT_SOURCE_DIR}/sqlite3secure/src/*.h)
