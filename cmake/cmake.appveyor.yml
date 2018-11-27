@@ -33,7 +33,7 @@ before_build:
   - mkdir C:\projects\wxSQLite3_build
   - cd C:\projects\wxSQLite3_build
   - cmake --version
-  - cmake C:\projects\wxSQLite3 -DCMAKE_BUILD_TYPE=%configuration% -G %generator%
+  - cmake C:\projects\wxSQLite3\cmake -DCMAKE_BUILD_TYPE=%configuration% -G %generator%
 
 build_script:
   - cd C:\projects\wxSQLite3_build
