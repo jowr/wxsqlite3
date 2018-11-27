@@ -2,12 +2,12 @@ cmake_minimum_required(VERSION 3.2)
 
 project(wxSQLite3_SEE VERSION 4.3.0)
 
-message(STATUS "------------------- wxSQLite3_SEE -------------------")
-message(STATUS "Please note that the rijndael.* files are licensed")
-message(STATUS "under LGPL-3.0+ WITH WxWindows-exception-3.1.")
-message(STATUS "Make sure to respect the license terms, if linking")
-message(STATUS "statically with the sqlite3lib target.")
-message(STATUS "-----------------------------------------------------")
+message(STATUS "--------------------- wxSQLite3_SEE ---------------------")
+message(STATUS "Please note that the rijndael.* files are licensed under" )
+message(STATUS "the LGPL-3.0+ WITH WxWindows-exception-3.1. Make sure to" )
+message(STATUS "read and respect the license terms, if linking statically")
+message(STATUS "with the sqlite3lib target."                              )
+message(STATUS "---------------------------------------------------------")
 
 #file(GLOB SQLITE_SEE_SRC ${CMAKE_CURRENT_SOURCE_DIR}/sqlite3secure/src/*.c)
 #file(GLOB SQLITE_SEE_HDR ${CMAKE_CURRENT_SOURCE_DIR}/sqlite3secure/src/*.h)
@@ -16,15 +16,15 @@ message(STATUS "-----------------------------------------------------")
 #sqlite3.rc 	Resource file specifying version information for the SQLite3 library
 #sqlite3shell.rc 	Resource file specifying version information for the SQLite3 shell
 
-list(APPEND SQLITE3SECURE_DLL_SRC "${CMAKE_CURRENT_SOURCE_DIR}/sqlite3secure/src/sqlite3secure.c")
-list(APPEND SQLITE3SECURE_LIB_SRC "${CMAKE_CURRENT_SOURCE_DIR}/sqlite3secure/src/sqlite3secure.c")
-list(APPEND SQLITE3SECURE_SHL_SRC "${CMAKE_CURRENT_SOURCE_DIR}/sqlite3secure/src/shell.c")
+list(APPEND SQLITE3SECURE_DLL_SRC "${CMAKE_CURRENT_SOURCE_DIR}/../sqlite3secure/src/sqlite3secure.c")
+list(APPEND SQLITE3SECURE_LIB_SRC "${CMAKE_CURRENT_SOURCE_DIR}/../sqlite3secure/src/sqlite3secure.c")
+list(APPEND SQLITE3SECURE_SHL_SRC "${CMAKE_CURRENT_SOURCE_DIR}/../sqlite3secure/src/shell.c")
 
 if (MSVC) 
-  list(APPEND SQLITE3SECURE_DLL_SRC "${CMAKE_CURRENT_SOURCE_DIR}/sqlite3secure/src/sqlite3.rc")
-  list(APPEND SQLITE3SECURE_DLL_SRC "${CMAKE_CURRENT_SOURCE_DIR}/sqlite3secure/src/sqlite3.def")
-  list(APPEND SQLITE3SECURE_LIB_SRC "${CMAKE_CURRENT_SOURCE_DIR}/sqlite3secure/src/sqlite3.rc")
-  list(APPEND SQLITE3SECURE_SHL_SRC "${CMAKE_CURRENT_SOURCE_DIR}/sqlite3secure/src/sqlite3shell.rc")
+  list(APPEND SQLITE3SECURE_DLL_SRC "${CMAKE_CURRENT_SOURCE_DIR}/../sqlite3secure/src/sqlite3.rc")
+  list(APPEND SQLITE3SECURE_DLL_SRC "${CMAKE_CURRENT_SOURCE_DIR}/../sqlite3secure/src/sqlite3.def")
+  list(APPEND SQLITE3SECURE_LIB_SRC "${CMAKE_CURRENT_SOURCE_DIR}/../sqlite3secure/src/sqlite3.rc")
+  list(APPEND SQLITE3SECURE_SHL_SRC "${CMAKE_CURRENT_SOURCE_DIR}/../sqlite3secure/src/sqlite3shell.rc")
 endif()
 
 add_library(sqlite3dll SHARED ${SQLITE3SECURE_DLL_SRC})
@@ -32,7 +32,7 @@ add_library(sqlite3lib STATIC ${SQLITE3SECURE_LIB_SRC})
 add_executable(sqlite3shell ${SQLITE3SECURE_SHL_SRC})
 target_link_libraries(sqlite3shell sqlite3lib)
 
-target_include_directories(sqlite3dll PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/sqlite3secure/src)
+target_include_directories(sqlite3dll PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../sqlite3secure/src)
 target_compile_definitions(sqlite3dll PRIVATE 
   _USRDLL
   THREADSAFE=1
@@ -61,7 +61,7 @@ target_compile_definitions(sqlite3dll PRIVATE
   SQLITE_USER_AUTHENTICATION
 )
 
-target_include_directories(sqlite3lib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/sqlite3secure/src)
+target_include_directories(sqlite3lib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../sqlite3secure/src)
 target_compile_definitions(sqlite3lib PRIVATE 
   _LIB
   THREADSAFE=1
@@ -95,7 +95,7 @@ target_compile_definitions(sqlite3lib PRIVATE
   SQLITE_ENABLE_UNKNOWN_SQL_FUNCTION
 )
 
-target_include_directories(sqlite3shell PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/sqlite3secure/src)
+target_include_directories(sqlite3shell PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../sqlite3secure/src)
 target_compile_definitions(sqlite3shell PRIVATE 
   SQLITE_SHELL_IS_UTF8
   SQLITE_HAS_CODEC=1
