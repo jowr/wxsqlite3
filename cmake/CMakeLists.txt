@@ -32,8 +32,8 @@ add_library(sqlite3lib STATIC ${SQLITE3SECURE_LIB_SRC})
 add_executable(sqlite3shell ${SQLITE3SECURE_SHL_SRC})
 target_link_libraries(sqlite3shell sqlite3lib)
 
-target_include_directories(sqlite3dll PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../sqlite3secure/src)
-target_compile_definitions(sqlite3dll PRIVATE 
+target_include_directories(sqlite3dll PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../sqlite3secure/src)
+target_compile_definitions(sqlite3dll PUBLIC 
   _USRDLL
   THREADSAFE=1
   SQLITE_MAX_ATTACHED=10
@@ -61,8 +61,8 @@ target_compile_definitions(sqlite3dll PRIVATE
   SQLITE_USER_AUTHENTICATION
 )
 
-target_include_directories(sqlite3lib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../sqlite3secure/src)
-target_compile_definitions(sqlite3lib PRIVATE 
+target_include_directories(sqlite3lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../sqlite3secure/src)
+target_compile_definitions(sqlite3lib PUBLIC 
   _LIB
   THREADSAFE=1
   SQLITE_MAX_ATTACHED=10
@@ -95,8 +95,8 @@ target_compile_definitions(sqlite3lib PRIVATE
   SQLITE_ENABLE_UNKNOWN_SQL_FUNCTION
 )
 
-target_include_directories(sqlite3shell PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../sqlite3secure/src)
-target_compile_definitions(sqlite3shell PRIVATE 
+target_include_directories(sqlite3shell PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../sqlite3secure/src)
+target_compile_definitions(sqlite3shell PUBLIC 
   SQLITE_SHELL_IS_UTF8
   SQLITE_HAS_CODEC=1
   SQLITE_USER_AUTHENTICATION
