@@ -18,7 +18,13 @@ configuration:
 environment:
   matrix:
   - arch: Win32
+    SQLITE3_BUILD_SHARED_LIBS: ON
   - arch: Win64
+    SQLITE3_BUILD_SHARED_LIBS: ON
+  - arch: Win32
+    SQLITE3_BUILD_SHARED_LIBS: OFF
+  - arch: Win64
+    SQLITE3_BUILD_SHARED_LIBS: OFF
 
 init:
   - echo %APPVEYOR_BUILD_WORKER_IMAGE% - %configuration% - %arch%
@@ -33,7 +39,7 @@ before_build:
   - mkdir C:\projects\wxSQLite3_build
   - cd C:\projects\wxSQLite3_build
   - cmake --version
-  - cmake C:\projects\wxSQLite3\cmake -DCMAKE_BUILD_TYPE=%configuration% -G %generator%
+  - cmake C:\projects\wxSQLite3\cmake -DCMAKE_BUILD_TYPE=%configuration% -DSQLITE3_BUILD_SHARED_LIBS=%SQLITE3_BUILD_SHARED_LIBS% -G %generator%
 
 build_script:
   - cd C:\projects\wxSQLite3_build

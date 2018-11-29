@@ -114,3 +114,26 @@ target_compile_definitions(sqlite3shell PUBLIC
   SQLITE_HAS_CODEC=1
   SQLITE_USER_AUTHENTICATION
 )
+
+option(SQLITE3_BUILD_SHARED_LIBS "Use a shared library for SQLite3" OFF)
+# Create an alias that respects the default CMake settings
+if(BUILD_SHARED_LIBS OR SQLITE3_BUILD_SHARED_LIBS)
+  add_library(sqlite3 ALIAS sqlite3dll)
+else(BUILD_SHARED_LIBS OR SQLITE3_BUILD_SHARED_LIBS)
+  add_library(sqlite3 ALIAS sqlite3lib)
+endif(BUILD_SHARED_LIBS OR SQLITE3_BUILD_SHARED_LIBS)
+
+# Provide a macro that handles the library deployment and the include paths
+macro(add_sqlite3_to_target param_TARGETNAME)
+  target_link_libraries(${param_TARGETNAME} PUBLIC sqlite3)
+  target_compile_definitions(${param_TARGETNAME} PUBLIC SQLITE_HAS_CODEC=1)
+  target_include_directories(${param_TARGETNAME} PUBLIC $<TARGET_PROPERTY:sqlite3,INCLUDE_DIRECTORIES>)
+  if(BUILD_SHARED_LIBS OR SQLITE3_BUILD_SHARED_LIBS)
+    add_custom_command(
+      TARGET ${param_TARGETNAME}
+      POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:sqlite3>" "$<TARGET_FILE_DIR:${param_TARGETNAME}>"
+      COMMENT "Deploying the sqlite3 library"
+    )
+  endif(BUILD_SHARED_LIBS OR SQLITE3_BUILD_SHARED_LIBS)
+endmacro()
