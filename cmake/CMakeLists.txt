@@ -30,8 +30,19 @@ endif()
 add_library(sqlite3dll SHARED ${SQLITE3SECURE_DLL_SRC})
 add_library(sqlite3lib STATIC ${SQLITE3SECURE_LIB_SRC})
 add_executable(sqlite3shell ${SQLITE3SECURE_SHL_SRC})
-target_link_libraries(sqlite3shell sqlite3lib)
 
+# Link math and dl on Linux, alternatively use ${CMAKE_DL_LIBS}
+#list(APPEND LINKED_LIBS ${CMAKE_DL_LIBS})
+if (UNIX) 
+  #list(APPEND LINKED_LIBS pthread)
+  if (NOT APPLE) 
+    list(APPEND LINKED_LIBS m)
+  endif (NOT APPLE)
+elseif (MSYS OR MINGW)
+  #list(APPEND LINKED_LIBS ssp)
+endif (UNIX)
+
+target_link_libraries(sqlite3dll ${LINKED_LIBS})
 target_include_directories(sqlite3dll PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../sqlite3secure/src)
 target_compile_definitions(sqlite3dll PUBLIC 
   _USRDLL
@@ -61,6 +72,7 @@ target_compile_definitions(sqlite3dll PUBLIC
   SQLITE_USER_AUTHENTICATION
 )
 
+target_link_libraries(sqlite3lib ${LINKED_LIBS})
 target_include_directories(sqlite3lib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../sqlite3secure/src)
 target_compile_definitions(sqlite3lib PUBLIC 
   _LIB
@@ -95,6 +107,7 @@ target_compile_definitions(sqlite3lib PUBLIC
   SQLITE_ENABLE_UNKNOWN_SQL_FUNCTION
 )
 
+target_link_libraries(sqlite3shell sqlite3lib)
 target_include_directories(sqlite3shell PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../sqlite3secure/src)
 target_compile_definitions(sqlite3shell PUBLIC 
   SQLITE_SHELL_IS_UTF8
