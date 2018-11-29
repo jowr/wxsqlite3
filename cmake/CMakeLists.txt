@@ -115,7 +115,7 @@ target_compile_definitions(sqlite3shell PUBLIC
   SQLITE_USER_AUTHENTICATION
 )
 
-option(SQLITE3_BUILD_SHARED_LIBS "Use a shared library for SQLite3" OFF)
+option(SQLITE3_BUILD_SHARED_LIBS "Use a shared library for SQLite3" ON)
 # Create an alias that respects the default CMake settings
 if(BUILD_SHARED_LIBS OR SQLITE3_BUILD_SHARED_LIBS)
   add_library(sqlite3 ALIAS sqlite3dll)
@@ -125,6 +125,7 @@ endif(BUILD_SHARED_LIBS OR SQLITE3_BUILD_SHARED_LIBS)
 
 set_property(TARGET sqlite3dll PROPERTY SOVERSION ${PROJECT_VERSION})
 #export(TARGETS sqlite3 FILE ${CMAKE_CURRENT_BINARY_DIR}/sqlite3-exports.cmake)
+set_property(TARGET sqlite3dll PROPERTY OUTPUT_NAME sqlite3)
 if(WIN32)
   set_target_properties(sqlite3dll PROPERTIES DEBUG_POSTFIX "d")
   set_target_properties(sqlite3lib PROPERTIES DEBUG_POSTFIX "d")
