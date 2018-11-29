@@ -123,17 +123,25 @@ else(BUILD_SHARED_LIBS OR SQLITE3_BUILD_SHARED_LIBS)
   add_library(sqlite3 ALIAS sqlite3lib)
 endif(BUILD_SHARED_LIBS OR SQLITE3_BUILD_SHARED_LIBS)
 
+set_property(TARGET sqlite3dll PROPERTY SOVERSION ${PROJECT_VERSION})
+#export(TARGETS sqlite3 FILE ${CMAKE_CURRENT_BINARY_DIR}/sqlite3-exports.cmake)
+if(WIN32)
+  set_target_properties(sqlite3dll PROPERTIES DEBUG_POSTFIX "d")
+  set_target_properties(sqlite3lib PROPERTIES DEBUG_POSTFIX "d")
+endif()
+
 # Provide a macro that handles the library deployment and the include paths
 macro(add_sqlite3_to_target param_TARGETNAME)
-  target_link_libraries(${param_TARGETNAME} PUBLIC sqlite3)
+  add_dependencies(${param_TARGETNAME} sqlite3)
+  target_link_libraries(${param_TARGETNAME} $<TARGET_LINKER_FILE:sqlite3>)
   target_compile_definitions(${param_TARGETNAME} PUBLIC SQLITE_HAS_CODEC=1)
   target_include_directories(${param_TARGETNAME} PUBLIC $<TARGET_PROPERTY:sqlite3,INCLUDE_DIRECTORIES>)
-  if(BUILD_SHARED_LIBS OR SQLITE3_BUILD_SHARED_LIBS)
+  if(SQLITE3_BUILD_SHARED_LIBS)
     add_custom_command(
       TARGET ${param_TARGETNAME}
       POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:sqlite3>" "$<TARGET_FILE_DIR:${param_TARGETNAME}>"
       COMMENT "Deploying the sqlite3 library"
     )
-  endif(BUILD_SHARED_LIBS OR SQLITE3_BUILD_SHARED_LIBS)
+  endif(SQLITE3_BUILD_SHARED_LIBS)
 endmacro()
